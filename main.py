@@ -39,10 +39,9 @@ def registerUser(reg:Reg):
                     "password" : "admin",
                     "worknumber": 1
                 }).execute()
-                return responseadm
+                return response.data
             except Exception as e :
                 raise HTTPException(status_code=500, detail=str(e))
-        return response.data
     except Exception as e :
         detail = str(e)
         detail_dict = ast.literal_eval(detail)
