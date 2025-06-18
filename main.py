@@ -82,6 +82,13 @@ class getTasK(BaseModel):
     id : int
     datestart:str
 
+class addNote(BaseModel):
+    id : int
+    username:str
+    subject: str
+    notetext:str
+
+
 @app.post("/registerAcc")
 def registerAcc(reg:Reg):
     try :
@@ -252,4 +259,18 @@ def taskfinsh(task:TaskFinish):
         raise HTTPException(status_code=404, detail="id not founf")
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-        
+
+@app.post("/addnote")
+def taskInput(note:addNote):
+    try:
+        response = supabase.table("notemtc").insert({
+        "id"    : note.id,
+        "username"    : note.username,
+        "subject"    : note.subject,
+        "notetext"    : note.notetext,
+        }).execute()
+        if response.data:
+            return response.data
+        raise HTTPException(status_code=404, detail="id not founf")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
