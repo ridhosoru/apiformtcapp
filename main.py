@@ -9,6 +9,8 @@ from dotenv import load_dotenv
 from supabase import create_client, Client
 from postgrest import APIError
 import ast
+from fastapi.middleware.cors import CORSMiddleware
+import uvicorn
 
 load_dotenv()
 db_url = os.getenv("db_url")
@@ -97,6 +99,13 @@ class getNote(BaseModel):
 
 class getAlltask(BaseModel):
     id : int
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/getCred")
 def get_cred():
@@ -311,3 +320,6 @@ def getTask(getalltask:getAlltask):
         raise HTTPException(status_code=404, detail="ID not found")
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="0.0.0.0", port=8080)
