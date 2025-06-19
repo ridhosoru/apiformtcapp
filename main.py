@@ -93,6 +93,8 @@ class getNote(BaseModel):
     id:int
     username:str
 
+class getAlltask(BaseModel):
+    id : int
 
 @app.post("/registerAcc")
 def registerAcc(reg:Reg):
@@ -288,5 +290,15 @@ def getnote(note:getNote):
         if response.data:
             return response.data
         raise HTTPException(status_code=404, detail="id not founf")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/getAllTask")
+def getTask(getalltask:getAlltask):
+    try:
+        response = supabase.table("tasktable").select("*").eq("id", getalltask.id).execute()
+        if response.data: 
+            return response.data
+        raise HTTPException(status_code=404, detail="ID not found")
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
