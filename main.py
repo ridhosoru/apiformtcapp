@@ -1,7 +1,8 @@
 import os
 import json
 from dotenv import load_dotenv
-from fastapi import FastAPI,HTTPException
+from fastapi import FastAPI,Depends,HTTPException
+from fastapi.security import APIKeyHeader
 from pydantic import BaseModel
 from typing import Optional
 from dotenv import load_dotenv
@@ -14,6 +15,7 @@ db_url = os.getenv("db_url")
 db_key = os.getenv("db_key")
 app = FastAPI()
 supabase: Client = create_client(db_url, db_key)
+
 
 class Reg(BaseModel):
     username : str
@@ -95,6 +97,13 @@ class getNote(BaseModel):
 
 class getAlltask(BaseModel):
     id : int
+
+@app.get("/getCred")
+def get_cred():
+    return {
+        "email": os.getenv("email"),
+        "password": os.getenv("password")
+    }
 
 @app.post("/registerAcc")
 def registerAcc(reg:Reg):
