@@ -87,6 +87,11 @@ class addNote(BaseModel):
     username:str
     subject: str
     notetext:str
+    datenote:str
+
+class getNote(BaseModel):
+    id:int
+    username:str
 
 
 @app.post("/registerAcc")
@@ -268,7 +273,18 @@ def taskInput(note:addNote):
         "username"    : note.username,
         "subject"    : note.subject,
         "notetext"    : note.notetext,
+        "datenote"     :note.datenote
         }).execute()
+        if response.data:
+            return response.data
+        raise HTTPException(status_code=404, detail="id not founf")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+@app.post("/getNote")
+def getnote(note:getNote):
+    try:
+        response = supabase.table("notemtc").select("*").eq("id", note.id).eq("username",note.username).execute()
         if response.data:
             return response.data
         raise HTTPException(status_code=404, detail="id not founf")
