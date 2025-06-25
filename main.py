@@ -100,6 +100,10 @@ class getNote(BaseModel):
 class getAlltask(BaseModel):
     id : int
 
+class regProd(BaseModel):
+    id:int
+    name:str
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -202,10 +206,10 @@ def getLine(getline:wId):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     
-@app.post("/issueTable")
+@app.post("/problemName")
 def getLine(getissue:wId):
     try:
-        response = supabase.table("issuetable").select("*").eq("id", getissue.id).execute()
+        response = supabase.table("problemname").select("*").eq("id", getissue.id).execute()
         if response.data: 
             return response.data
         raise HTTPException(status_code=404, detail="ID not found")
@@ -321,5 +325,44 @@ def getTask(getalltask:getAlltask):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8080)
+@app.post("/regMachine")
+def getMachine(regprod:regProd):
+    try:
+        response = supabase.table("machinename").insert({
+        "id"    : regprod.id,
+        "name"  : regprod.name
+        }).execute()
+        if response.data:
+            return response.data
+        raise HTTPException(status_code=404, detail="id not founf")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/regLoc")
+def getMachine(regprod:regProd):
+    try:
+        response = supabase.table("linename").insert({
+        "id"    : regprod.id,
+        "name"  : regprod.name
+        }).execute()
+        if response.data:
+            return response.data
+        raise HTTPException(status_code=404, detail="id not founf")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+@app.post("/regProb")
+def getMachine(regprod:regProd):
+    try:
+        response = supabase.table("problemname").insert({
+        "id"    : regprod.id,
+        "name"  : regprod.name
+        }).execute()
+        if response.data:
+            return response.data
+        raise HTTPException(status_code=404, detail="id not founf")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+# if __name__ == "__main__":
+#     uvicorn.run("main:app", host="0.0.0.0", port=8080)
