@@ -110,6 +110,7 @@ class addstore(BaseModel):
     codepart: str
     typepart:str
     stockpart:int
+    imgpath : str
 
 app.add_middleware(
     CORSMiddleware,
@@ -379,7 +380,8 @@ def taskInput(adstore:addstore):
         "namepart"    : adstore.namepart,
         "codepart"    : adstore.codepart,
         "typepart"    : adstore.typepart,
-        "stock"     :adstore.stockpart
+        "stockpart"     :adstore.stockpart,
+        "imgpath" : adstore.imgpath
         }).execute()
         if response.data:
             return response.data
