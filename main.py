@@ -104,6 +104,13 @@ class regProd(BaseModel):
     id:int
     name:str
 
+class addstore(BaseModel):
+    id : int
+    namepart:str
+    codepart: str
+    typepart:str
+    stockpart:int
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -357,6 +364,22 @@ def getMachine(regprod:regProd):
         response = supabase.table("problemname").insert({
         "id"    : regprod.id,
         "name"  : regprod.name
+        }).execute()
+        if response.data:
+            return response.data
+        raise HTTPException(status_code=404, detail="id not founf")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/addstore")
+def taskInput(adstore:addstore):
+    try:
+        response = supabase.table("store").insert({
+        "id"    : adstore.id,
+        "namepart"    : adstore.namepart,
+        "codepart"    : adstore.codepart,
+        "typepart"    : adstore.typepart,
+        "stock"     :adstore.stockpart
         }).execute()
         if response.data:
             return response.data
