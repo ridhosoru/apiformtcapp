@@ -112,6 +112,9 @@ class addstore(BaseModel):
     stockpart:int
     imgpath : str
 
+class getID(BaseModel):
+    id : int
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -386,6 +389,16 @@ def taskInput(adstore:addstore):
         if response.data:
             return response.data
         raise HTTPException(status_code=404, detail="id not founf")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/getStorePart")
+def getTask(getid:getID):
+    try:
+        response = supabase.table("store").select("*").eq("id", getid.id).execute()
+        if response.data: 
+            return response.data
+        raise HTTPException(status_code=404, detail="ID not found")
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
