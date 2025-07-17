@@ -122,6 +122,15 @@ class takestock(BaseModel):
 class getID(BaseModel):
     id : int
 
+class takestorelist(BaseModel):
+    id :int
+    namepart:str
+    codepart: str
+    typepart:str
+    stocktake:int
+    date : str
+    nameuser:str
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -420,6 +429,25 @@ def taskInput(Takestock:takestock):
         raise HTTPException(status_code=404, detail="id not founf")
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/takestorelist")
+def taskInput(takestorel:takestorelist):
+    try:
+        response = supabase.table("storelist").insert({
+        "id"    : takestorel.id,
+        "namepart"    : takestorel.namepart,
+        "codepart"    : takestorel.codepart,
+        "typepart"    : takestorel.typepart,
+        "prodtake"     :takestorel.stocktake,
+        "date" : takestorel.date,
+        "nameuser":takestorel.nameuser
+        }).execute()
+        if response.data:
+            return response.data
+        raise HTTPException(status_code=404, detail="id not founf")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 # if __name__ == "__main__":
 #     uvicorn.run("main:app", host="0.0.0.0", port=8080)
