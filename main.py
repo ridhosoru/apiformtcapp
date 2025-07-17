@@ -112,6 +112,13 @@ class addstore(BaseModel):
     stockpart:int
     imgpath : str
 
+class takestock(BaseModel):
+    id:int
+    namepart:str
+    codepart:str
+    stockpart:int
+
+
 class getID(BaseModel):
     id : int
 
@@ -399,6 +406,18 @@ def getTask(getid:getID):
         if response.data: 
             return response.data
         raise HTTPException(status_code=404, detail="ID not found")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/takestock")
+def taskInput(Takestock:takestock):
+    try:
+        response = supabase.table("store").update({
+        "stockpart"     :Takestock.stockpart
+        }).eq("id",Takestock.id).eq("namepart",Takestock.namepart).eq("codepart",Takestock.codepart).execute()
+        if response.data:
+            return response.data
+        raise HTTPException(status_code=404, detail="id not founf")
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
