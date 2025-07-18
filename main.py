@@ -130,6 +130,8 @@ class takestorelist(BaseModel):
     stocktake:int
     date : str
     nameuser:str
+    location:str
+    machine:str
 
 app.add_middleware(
     CORSMiddleware,
@@ -440,7 +442,9 @@ def taskInput(takestorel:takestorelist):
         "typepart"    : takestorel.typepart,
         "prodtake"     :takestorel.stocktake,
         "date" : takestorel.date,
-        "nameuser":takestorel.nameuser
+        "nameuser":takestorel.nameuser,
+        "location":takestorel.location,
+        "machine":takestorel.machine
         }).execute()
         if response.data:
             return response.data
