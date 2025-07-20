@@ -132,6 +132,7 @@ class takestorelist(BaseModel):
     nameuser:str
     location:str
     machine:str
+    status:str
 
 app.add_middleware(
     CORSMiddleware,
@@ -444,7 +445,8 @@ def taskInput(takestorel:takestorelist):
         "date" : takestorel.date,
         "nameuser":takestorel.nameuser,
         "location":takestorel.location,
-        "machine":takestorel.machine
+        "machine":takestorel.machine,
+        "status" :takestorel.status
         }).execute()
         if response.data:
             return response.data
