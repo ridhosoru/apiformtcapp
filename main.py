@@ -1,16 +1,13 @@
 import os
-import json
 from dotenv import load_dotenv
 from fastapi import FastAPI,Depends,HTTPException
-from fastapi.security import APIKeyHeader
 from pydantic import BaseModel
 from typing import Optional
 from dotenv import load_dotenv
 from supabase import create_client, Client
-from postgrest import APIError
 import ast
 from fastapi.middleware.cors import CORSMiddleware
-import uvicorn
+
 
 load_dotenv()
 db_url = os.getenv("db_url")
